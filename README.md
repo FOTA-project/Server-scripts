@@ -4,19 +4,6 @@ A collection of scripts related to the server holding the .ELF file
 ## References
 [Firebase docs](https://firebase.google.com/docs/guides)
 
-
-## How-To
-[RPi3: Enable UART and disable Console debug messages](https://www.circuits.dk/setup-raspberry-pi-3-gpio-uart/)
-
-[RPi3: Get and set baud rate at runtime](https://www.raspberrypi.org/forums/viewtopic.php?t=36303)
-
-[RPi3: Delay is C++](https://raspberry-projects.com/pi/programming-in-c/timing/delays)
-
-[RPi3: How to use wiringPi lib](http://wiringpi.com/reference/serial-library/)
-
-[RPi3: How to build wiringPi lib in C++](https://www.raspberrypi.org/forums/viewtopic.php?t=48903)
-
-
 ## Install [Pyrebase](https://github.com/thisbejim/Pyrebase)
 1. Uninstall everything 1st to avoid old versions errors
    ```bash
