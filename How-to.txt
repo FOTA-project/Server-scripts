@@ -1,0 +1,12 @@
+```bash
+crontab -e
+```
+
+Then add this line: `/1 * * * * ~/Desktop/bootloader-daemon.bash`
+
+The folder structure/tree should look like this:
+
+ELF-parser <folder>
+RPI-communicator <folder>
+Firebase-database <folder>
+bootloader-daemon.bash <file>
