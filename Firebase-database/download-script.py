@@ -16,6 +16,10 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig);
 storage = firebase.storage()
 
+users = db.child("stm32Users").get();
+print(stm32Users.val())
+
+
 local_file_download = r'bootloader-dummy-app.elf'
 cloud_file = r'test_folder/bootloader-dummy-app.elf'
 
