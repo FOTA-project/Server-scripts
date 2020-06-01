@@ -15,16 +15,14 @@ firebaseConfig = {
 # Initialize Firebase
 firebase = pyrebase.initialize_app(firebaseConfig);
 storage = firebase.storage()
+db = firebase.database()
+
+db.update({"isNewElf": "1"})
 
 local_file = r'bootloader-dummy-app.elf'
-#local_file_download = r'lolxd.elf'
 cloud_file = r'test_folder/bootloader-dummy-app.elf'
 
 # upload file
 storage.child(cloud_file).put(local_file)
 
-
-# download file
-#storage.child(cloud_file).download(local_file_download)
-
-print("Script finished")
+#print("Script finished")

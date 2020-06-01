@@ -6,6 +6,11 @@ echo "step 1" > ~/Desktop/log.txt
 echo "### Downloading .elf file from server ###"
 cd Firebase-database/
 python3 download-script.py
+
+if [ $? -eq 0 ]; then
+   exit
+fi
+
 echo "######"
 
 echo "step 2" >> ~/Desktop/log.txt
