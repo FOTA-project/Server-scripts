@@ -20,6 +20,11 @@ firebaseConfig = {
     "measurementId": "G-2DE9D9TN6N"
   };
 
+auth =firebase.auth()
+email = input("enter your mail")
+password = input("enter your password")
+signin = auth.sign_in_with_email_and_password(email,password)
+print("sigin in sucessufully")
 
 # Initialize Firebase
 firebase = pyrebase.initialize_app(firebaseConfig);
