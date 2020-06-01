@@ -1,6 +1,8 @@
 # Server-scripts
 A collection of scripts related to the server holding the .ELF file
 
+## Server link: [Firebase](https://console.firebase.google.com/project/fota-server-b4148/)
+
 ## References
 [Firebase docs](https://firebase.google.com/docs/guides)
 
