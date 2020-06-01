@@ -33,4 +33,6 @@ cloud_file = r'test_folder/bootloader-dummy-app.elf'
 # upload file
 storage.child(cloud_file).put(local_file)
 
+exit(0)
+
 #print("Script finished")
