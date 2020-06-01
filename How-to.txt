@@ -2,7 +2,7 @@
 crontab -e
 ```
 
-Then add this line: `/1 * * * * ~/Desktop/bootloader-daemon.bash`
+Then add this line: `*/1 * * * * ~/Desktop/bootloader-daemon.bash`
 
 The folder structure/tree should look like this:
 
