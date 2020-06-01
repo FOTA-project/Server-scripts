@@ -7,7 +7,8 @@ echo "### Downloading .elf file from server ###"
 cd Firebase-database/
 python3 download-script.py
 
-if [ $? -eq 0 ]; then
+# if no new .elf is found
+if [ $? -eq 1 ]; then
    exit
 fi
 
