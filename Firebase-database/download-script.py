@@ -19,7 +19,7 @@ password = r"12345@ITI"
 firebase = pyrebase.initialize_app(firebaseConfig);
 auth = firebase.auth()
 user = auth.sign_in_with_email_and_password(email, password)
-user = auth.refresh(user['refreshToken'])
+user = auth.refresh(user['refreshToken']) # optional
 
 db = firebase.database()
 storage = firebase.storage()
@@ -30,19 +30,20 @@ user_tokenId = user['idToken']
 
 isNewElf_flag = "users/" + user_uid + "/STM32"
 
+# get isNewElf flag from database
 isNewElf = db.child(isNewElf_flag + "/isNewElf").get(user_tokenId).val()
 
 if isNewElf == 0:
    exit(1)
 
-# update database
-db.child(isNewElf_flag).update({"isNewElf" : 0}, user_tokenId)
-
-local_file_download = r'bootloader-dummy-app.elf'
-cloud_file = "/users/" + user_uid + "/bootloader-dummy-app.elf"
+local_file_download = r"bootloader-dummy-app.elf"
+cloud_file = "users/" + user_uid + "/bootloader-dummy-app.elf"
 
 # download file
 storage.child(cloud_file).download(local_file_download, user_tokenId)
+
+# update isNewElf flag in database
+db.child(isNewElf_flag).update({"isNewElf" : 0}, user_tokenId)
 
 exit(0)
 

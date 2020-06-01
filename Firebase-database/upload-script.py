@@ -28,7 +28,7 @@ password = r"12345@ITI"
 firebase = pyrebase.initialize_app(firebaseConfig);
 auth = firebase.auth()
 user = auth.sign_in_with_email_and_password(email, password)
-user = auth.refresh(user['refreshToken'])
+user = auth.refresh(user['refreshToken']) # optional
 
 db = firebase.database()
 storage = firebase.storage()
@@ -37,13 +37,13 @@ user_uid = user['userId']
 user_tokenId = user['idToken']
 
 local_file = argv[1]
-cloud_file = "/users/" + user_uid + "/" + Path(argv[1]).name
+cloud_file = "users/" + user_uid + "/" + Path(argv[1]).name
 isNewElf_flag = "users/" + user_uid + "/STM32"
 
 # upload file
 storage.child(cloud_file).put(local_file, user_tokenId)
 
-# update database
+# update isNewElf flag in database
 db.child(isNewElf_flag).update({"isNewElf" : 1}, user_tokenId)
 
 exit(0)
