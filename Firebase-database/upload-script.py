@@ -12,6 +12,7 @@ firebaseConfig = {
     "measurementId": "G-2DE9D9TN6N"
   };
 
+
 # Initialize Firebase
 firebase = pyrebase.initialize_app(firebaseConfig);
 storage = firebase.storage()
