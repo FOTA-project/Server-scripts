@@ -1,5 +1,6 @@
 import pyrebase
 import sys
+from pathlib import Path
 
 
 argv = sys.argv
@@ -20,24 +21,30 @@ firebaseConfig = {
     "measurementId": "G-2DE9D9TN6N"
   };
 
-auth =firebase.auth()
-email = input("enter your mail")
-password = input("enter your password")
-signin = auth.sign_in_with_email_and_password(email,password)
-print("sigin in sucessufully")
+email = r"fota_project_gp_iti@gmail.com"
+password = r"12345@ITI"
 
 # Initialize Firebase
 firebase = pyrebase.initialize_app(firebaseConfig);
-storage = firebase.storage()
-db = firebase.database()
+auth = firebase.auth()
+user = auth.sign_in_with_email_and_password(email, password)
+user = auth.refresh(user['refreshToken'])
 
-db.update({"isNewElf": "1"})
+db = firebase.database()
+storage = firebase.storage()
+
+user_uid = user['userId']
+user_tokenId = user['idToken']
 
 local_file = argv[1]
-cloud_file = r'test_folder/bootloader-dummy-app.elf'
+cloud_file = "/users/" + user_uid + "/" + Path(argv[1]).name
+isNewElf_flag = "users/" + user_uid + "/STM32"
 
 # upload file
-storage.child(cloud_file).put(local_file)
+storage.child(cloud_file).put(local_file, user_tokenId)
+
+# update database
+db.child(isNewElf_flag).update({"isNewElf" : 1}, user_tokenId)
 
 exit(0)
 

@@ -12,24 +12,38 @@ firebaseConfig = {
     "measurementId": "G-2DE9D9TN6N"
 };
 
+email = r"fota_project_gp_iti@gmail.com"
+password = r"12345@ITI"
+
 # Initialize Firebase
 firebase = pyrebase.initialize_app(firebaseConfig);
-storage = firebase.storage()
+auth = firebase.auth()
+user = auth.sign_in_with_email_and_password(email, password)
+user = auth.refresh(user['refreshToken'])
+
 db = firebase.database()
+storage = firebase.storage()
 
-isNewElf = db.child("isNewElf").get().val()
+#user_uid = user['localId']
+user_uid = user['userId']
+user_tokenId = user['idToken']
 
-if isNewElf == "0":
-   exit(0)
+isNewElf_flag = "users/" + user_uid + "/STM32"
 
-db.update({"isNewElf": "0"})
+isNewElf = db.child(isNewElf_flag + "/isNewElf").get(user_tokenId).val()
+
+if isNewElf == 0:
+   exit(1)
+
+# update database
+db.child(isNewElf_flag).update({"isNewElf" : 0}, user_tokenId)
 
 local_file_download = r'bootloader-dummy-app.elf'
-cloud_file = r'test_folder/bootloader-dummy-app.elf'
+cloud_file = "/users/" + user_uid + "/bootloader-dummy-app.elf"
 
 # download file
-storage.child(cloud_file).download(local_file_download)
+storage.child(cloud_file).download(local_file_download, user_tokenId)
 
-exit(1)
+exit(0)
 
 #print("Script finished")
