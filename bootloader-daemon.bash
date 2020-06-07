@@ -16,13 +16,13 @@ echo "######"
 
 echo "step 2" >> ~/Desktop/log.txt
 echo "### Moving .elf file to parser location ###"
-mv bootloader-dummy-app.elf ../ELF-parser/Python-script/
+mv file.elf ../ELF-parser/Python-script/
 echo "######"
 
 echo "step 3" >> ~/Desktop/log.txt
 echo "### Parsing .elf file ###"
 cd ../ELF-parser/Python-script/
-python3 ELF_Parser.py
+python3 ELF_Parser.py file.elf
 echo "######"
 
 echo "step 4" >> ~/Desktop/log.txt
@@ -33,6 +33,9 @@ echo "######"
 echo "step 5" >> ~/Desktop/log.txt
 echo "### Executing communicator program ###"
 cd ../../RPI-communicator/bin/
+echo  >last-progress.txt
+echo  >progress.txt
+python3 progress-script.py &
 ./a
 echo "######"
 

@@ -37,7 +37,7 @@ user_uid = user['userId']
 user_tokenId = user['idToken']
 
 local_file = argv[1]
-cloud_file = "users/" + user_uid + "/" + Path(argv[1]).name
+cloud_file = "users/" + user_uid + "/file.elf"
 isNewElf_flag = "users/" + user_uid + "/STM32"
 
 # upload file

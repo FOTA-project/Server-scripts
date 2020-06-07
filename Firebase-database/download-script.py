@@ -36,8 +36,8 @@ isNewElf = db.child(isNewElf_flag + "/isNewElf").get(user_tokenId).val()
 if isNewElf == 0:
    exit(1)
 
-local_file_download = r"bootloader-dummy-app.elf"
-cloud_file = "users/" + user_uid + "/bootloader-dummy-app.elf"
+local_file_download = r'file.elf'
+cloud_file = "users/" + user_uid + "/file.elf"
 
 # download file
 storage.child(cloud_file).download(local_file_download, user_tokenId)
