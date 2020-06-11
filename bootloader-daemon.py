@@ -3,7 +3,20 @@ import time
 import os
 from ELF_Parser import *
 import threading
+import RPi.GPIO as GPIO
 
+GPIO.cleanup()
+
+ResetPin = 23
+BootPin  = 24
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(ResetPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setup(ResetPin, GPIO.IN)
+GPIO.setup(BootPin, GPIO.OUT)
+
+GPIO.output(BootPin, GPIO.LOW)
+#GPIO.output(ResetPin, GPIO.HIGH)
 
 firebaseConfig = {
     "apiKey": "AIzaSyBgBFhNa6OnJCLbFTQW3vF_Cyz-rMyN4vU",
@@ -35,6 +48,10 @@ INSTRUCTION_WRITE_MAX_REQUESTS    = -4
 #INSTRUCTION_GET_PROGRESS_FLAG_ARB = -5
 
 isTerminate = 0
+
+
+def RPi_Comm_Thread():
+    os.system('./a')
 
 while 1:
     time.sleep(0.5) # sleep 0.5 sec = 500 ms
@@ -74,7 +91,21 @@ while 1:
     progressInstructionFile.seek(0, 0)
     
     # call RPi communicator
-    commThreadHandle = threading.Thread(target=RPi_Comm_Thread)
+    commThreadHandle = threading.Thread(target = RPi_Comm_Thread)
+   
+    GPIO.output(BootPin, GPIO.HIGH)
+    
+    GPIO.setup (ResetPin, GPIO.OUT)
+    GPIO.output(ResetPin, GPIO.LOW)
+    time.sleep(0.01)
+    GPIO.setup(ResetPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    
+    
+    time.sleep(0.010)
+    GPIO.output(BootPin, GPIO.LOW)
+   
+    
+    
     commThreadHandle.start()
     
     elfProgress = db.child(user_db + "/elfProgress").get(user_tokenId).val()
@@ -108,7 +139,6 @@ while 1:
             #print("normal number, %d\n" %(int(line, 10)))
     
     progressInstructionFile.close()
-    commThreadHandle.stop() #############
+    isTerminate = 0
+    #####commThreadHandle.stop() #############
 
-def RPi_Comm_Thread():
-    os.system('./a')
