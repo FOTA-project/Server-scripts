@@ -2,6 +2,8 @@ import pyrebase
 import time
 import os
 from ELF_Parser import *
+import threading
+
 
 firebaseConfig = {
     "apiKey": "AIzaSyBgBFhNa6OnJCLbFTQW3vF_Cyz-rMyN4vU",
@@ -72,7 +74,8 @@ while 1:
     progressInstructionFile.seek(0, 0)
     
     # call RPi communicator
-    os.system('a')
+    commThreadHandle = threading.Thread(target=RPi_Comm_Thread)
+    commThreadHandle.start()
     
     elfProgress = db.child(user_db + "/elfProgress").get(user_tokenId).val()
 
@@ -105,4 +108,7 @@ while 1:
             #print("normal number, %d\n" %(int(line, 10)))
     
     progressInstructionFile.close()
+    commThreadHandle.stop() #############
 
+def RPi_Comm_Thread():
+    os.system('./a')
