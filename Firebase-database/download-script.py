@@ -1,6 +1,5 @@
 import pyrebase
 
-# upload
 firebaseConfig = {
     "apiKey": "AIzaSyBgBFhNa6OnJCLbFTQW3vF_Cyz-rMyN4vU",
     "authDomain": "fota-server-b4148.firebaseapp.com",
