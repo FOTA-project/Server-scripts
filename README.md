@@ -6,6 +6,8 @@ A collection of scripts related to the server holding the .ELF file
 ## References
 [Firebase docs](https://firebase.google.com/docs/guides)
 
+[Control Raspberry Pi GPIO Pins from Python](https://www.ics.com/blog/control-raspberry-pi-gpio-pins-python)
+
 ## Install [Pyrebase](https://github.com/thisbejim/Pyrebase)
 1. Uninstall everything 1st to avoid old versions errors
    ```bash
