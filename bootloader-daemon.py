@@ -14,7 +14,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(ResetPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 #GPIO.setup(ResetPin, GPIO.IN)
 GPIO.setup(BootPin, GPIO.OUT)
-
 GPIO.output(BootPin, GPIO.LOW)
 #GPIO.output(ResetPin, GPIO.HIGH)
 
@@ -93,19 +92,19 @@ while 1:
     # call RPi communicator
     commThreadHandle = threading.Thread(target = RPi_Comm_Thread)
    
+    # set BOOT1 pin to 1
     GPIO.output(BootPin, GPIO.HIGH)
     
+    # do reset sequence
     GPIO.setup (ResetPin, GPIO.OUT)
     GPIO.output(ResetPin, GPIO.LOW)
-    time.sleep(0.01)
+    time.sleep(0.001) # 1ms
     GPIO.setup(ResetPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     
-    
-    time.sleep(0.010)
+    # wait 5ms, then clear BOOT1 pin
+    time.sleep(0.005) # 5ms
     GPIO.output(BootPin, GPIO.LOW)
    
-    
-    
     commThreadHandle.start()
     
     elfProgress = db.child(user_db + "/elfProgress").get(user_tokenId).val()
