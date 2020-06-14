@@ -1,13 +1,12 @@
-```bash
-crontab -e
-```
+// folder structure
+~/Desktop/bootloader-daemon      <folder>
+|
+|
+|-- a                            <file>
+|-- ELF_Parser.py                <file>
+|-- start-bootloader-daemon.bash <file>
+|-- bootloader-daemon.py         <file>
 
-//// Then add this line: `*/1 * * * * ~/Desktop/bootloader-daemon.bash`
-* * * * * for i in {0..59}; do ~/Desktop/bootloader-daemon.bash && sleep 1; done;
 
-The folder structure/tree should look like this:
-
-ELF-parser <folder>
-RPI-communicator <folder>
-Firebase-database <folder>
-bootloader-daemon.bash <file>
+// crontab -e
+@reboot ~/Desktop/bootloader-daemon/start-bootloader-daemon.bash
