@@ -1,6 +1,13 @@
 #! /bin/bash
 
 cd "$(dirname $0)"
-python3 bootloader-daemon.py &
-echo Started bootloader daemon, exiting... >>"bootloader-daemon-log.txt"
+
+while [ 1 ]
+do
+   python3 bootloader-daemon.py 1>>"bootloader-daemon-log.txt" 2>>"bootloader-daemon-log.txt"
+   sleep 1
+done
+
+echo Exiting bootloader daemon, exiting... >>"bootloader-daemon-log.txt"
+
 exit

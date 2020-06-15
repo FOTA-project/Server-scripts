@@ -39,6 +39,9 @@ storage = firebase.storage()
 user = auth.sign_in_with_email_and_password(email, password)
 user = auth.refresh(user['refreshToken'])
 
+user_uid = ''
+user_tokenId = ''
+
 local_file_download = r'file.elf'
 
 INSTRUCTION_GET_PROGRESS_FLAG     = -1
@@ -49,12 +52,57 @@ INSTRUCTION_WRITE_MAX_REQUESTS    = -4
 
 isTerminate = 0
 
+# syncchronization semaphore
+isTokenRefreshThreadActive = 0
+
 
 def User_TokenRefresh_Thread():
     global user
+    global isTokenRefreshThreadActive
     
-    user = auth.refresh(user['refreshToken']) # get a new token
-    time.sleep(1800) # sleep 30min
+    while 1:
+        isTokenRefreshThreadActive = 1
+        user = auth.refresh(user['refreshToken']) # get a new token
+        isTokenRefreshThreadActive = 0
+        time.sleep(1800) # sleep 30min
+
+
+def User_LifeRefresher_Thread():
+    global user
+    global user_uid
+    global user_tokenId
+    global isTokenRefreshThreadActive
+    
+    user_uid = user['userId']
+    
+    user_top_db = "users/" + user_uid
+    
+    prevLifeFlag = -1
+    
+    while 1:
+        # wait 100ms
+        time.sleep(0.4)
+        
+        # we should attempt to get user data (uid, token) if it's being refreshed
+        if isTokenRefreshThreadActive == 1:
+            continue
+
+        user_tokenId = user['idToken']
+        
+        # get LifeFlag flag from database
+        LifeFlag = db.child(user_top_db + "/LifeFlag").get(user_tokenId).val()
+        
+        if LifeFlag == prevLifeFlag: # if no life change happened!
+            continue
+        
+        # toggle the flag
+        LifeFlag = LifeFlag ^ 1
+        
+        # update the previous flag indicator
+        prevLifeFlag = LifeFlag
+        
+        # update the flag in database
+        db.child(user_top_db).update({"LifeFlag" : LifeFlag}, user_tokenId)
 
 
 def RPi_Comm_Thread():
@@ -65,9 +113,19 @@ def RPi_Comm_Thread():
 tokenThreadHandle = threading.Thread(target = User_TokenRefresh_Thread)
 tokenThreadHandle.start()
 
+time.sleep(2)
+
+# user life flag refresher
+lifeThreadHandle = threading.Thread(target = User_LifeRefresher_Thread)
+lifeThreadHandle.start()
+
 
 while 1:
     time.sleep(0.5) # sleep 0.5 sec = 500 ms
+    
+    # we should attempt to get user data (uid, token) if it's being refreshed
+    if isTokenRefreshThreadActive == 1:
+        continue
     
     user_uid = user['userId']
     user_tokenId = user['idToken']
