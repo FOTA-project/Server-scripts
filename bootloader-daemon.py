@@ -58,7 +58,7 @@ while 1:
     time.sleep(0.5) # sleep 0.5 sec = 500 ms
     
     userTokenRefreshTimeout = userTokenRefreshTimeout + 1
-    if userTokenRefreshTimeout == 6000: # if 50min passed (multiple of 500ms)
+    if userTokenRefreshTimeout == 3600: # if 30min passed (multiple of 500ms)
         userTokenRefreshTimeout = 0 # reset ctr
         user = auth.refresh(user['refreshToken']) # get a new token
         
