@@ -48,20 +48,27 @@ INSTRUCTION_WRITE_MAX_REQUESTS    = -4
 #INSTRUCTION_GET_PROGRESS_FLAG_ARB = -5
 
 isTerminate = 0
-userTokenRefreshTimeout = 0
+
+
+def User_TokenRefresh_Thread():
+    global user
+    
+    user = auth.refresh(user['refreshToken']) # get a new token
+    time.sleep(1800) # sleep 30min
 
 
 def RPi_Comm_Thread():
     os.system('./a')
 
+
+# user token refresher
+tokenThreadHandle = threading.Thread(target = User_TokenRefresh_Thread)
+tokenThreadHandle.start()
+
+
 while 1:
     time.sleep(0.5) # sleep 0.5 sec = 500 ms
     
-    userTokenRefreshTimeout = userTokenRefreshTimeout + 1
-    if userTokenRefreshTimeout == 3600: # if 30min passed (multiple of 500ms)
-        userTokenRefreshTimeout = 0 # reset ctr
-        user = auth.refresh(user['refreshToken']) # get a new token
-        
     user_uid = user['userId']
     user_tokenId = user['idToken']
 
@@ -97,7 +104,8 @@ while 1:
     
     # call RPi communicator
     commThreadHandle = threading.Thread(target = RPi_Comm_Thread)
-   
+    commThreadHandle.start()
+    
     # set BOOT1 pin to 1
     GPIO.output(BootPin, GPIO.HIGH)
     
@@ -111,8 +119,6 @@ while 1:
     time.sleep(0.005) # 5ms
     GPIO.output(BootPin, GPIO.LOW)
    
-    commThreadHandle.start()
-    
     elfProgress = db.child(user_db + "/elfProgress").get(user_tokenId).val()
 
     while isTerminate == 0:
