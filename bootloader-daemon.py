@@ -1,9 +1,9 @@
 import pyrebase
 import time
 import os
-from ELF_Parser import *
 import threading
 import RPi.GPIO as GPIO
+from ELF_Parser import *
 
 GPIO.cleanup()
 
@@ -60,7 +60,7 @@ def User_TokenRefresh_Thread():
     global user
     global isTokenRefreshThreadActive
     
-    while 1:
+    while True:
         isTokenRefreshThreadActive = 1
         user = auth.refresh(user['refreshToken']) # get a new token
         isTokenRefreshThreadActive = 0
@@ -79,7 +79,7 @@ def User_LifeRefresher_Thread():
     
     prevLifeFlag = -1
     
-    while 1:
+    while True:
         # wait 100ms
         time.sleep(0.4)
         
@@ -111,16 +111,18 @@ def RPi_Comm_Thread():
 
 # user token refresher
 tokenThreadHandle = threading.Thread(target = User_TokenRefresh_Thread)
+tokenThreadHandle.daemon = True # set this thread as daemon so that sys.exit() won't be blocked
 tokenThreadHandle.start()
 
 time.sleep(2)
 
 # user life flag refresher
 lifeThreadHandle = threading.Thread(target = User_LifeRefresher_Thread)
+lifeThreadHandle.daemon = True # set this thread as daemon so that sys.exit() won't be blocked
 lifeThreadHandle.start()
 
 
-while 1:
+while True:
     time.sleep(0.5) # sleep 0.5 sec = 500 ms
     
     # we should attempt to get user data (uid, token) if it's being refreshed
