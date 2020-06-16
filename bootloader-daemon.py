@@ -123,7 +123,7 @@ lifeThreadHandle.start()
 
 
 while True:
-    time.sleep(0.5) # sleep 0.5 sec = 500 ms
+    time.sleep(0.4) # sleep 0.4 sec = 400 ms
     
     # we should attempt to get user data (uid, token) if it's being refreshed
     if isTokenRefreshThreadActive == 1:
