@@ -80,8 +80,8 @@ def User_LifeRefresher_Thread():
     prevLifeFlag = -1
     
     while True:
-        # wait 200ms
-        time.sleep(0.2)
+        # wait 400ms
+        time.sleep(0.4)
         
         # we should attempt to get user data (uid, token) if it's being refreshed
         if isTokenRefreshThreadActive == 1:
