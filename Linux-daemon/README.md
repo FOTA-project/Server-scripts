@@ -1,5 +1,6 @@
 # Folder structure
 
+```
 ~/Desktop/bootloader-daemon      <folder>
 |
 |
@@ -7,6 +8,7 @@
 |-- ELF_Parser.py                <file>
 |-- start-bootloader-daemon.bash <file>
 |-- bootloader-daemon.py         <file>
+```
 
 
 # How to add the script as a startup daemon 
