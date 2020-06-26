@@ -1,4 +1,5 @@
-// folder structure
+# Folder structure
+
 ~/Desktop/bootloader-daemon      <folder>
 |
 |
@@ -8,5 +9,10 @@
 |-- bootloader-daemon.py         <file>
 
 
-// crontab -e
+# How to add the script as a startup daemon 
+
+```bash
+crontab -e
+
 @reboot ~/Desktop/bootloader-daemon/start-bootloader-daemon.bash
+```
